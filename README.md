@@ -192,7 +192,6 @@ This implementation demonstrates:
  Assignment Completion
 
 This task manager fulfills all requirements for the TrailBridge recruitment assignment, demonstrating:
-<<<<<<< HEAD
 -  Advanced Full-stack Development capabilities
 -  Object-Oriented Programming mastery
 -  Modern JavaScript/TypeScript proficiency
@@ -208,6 +207,3 @@ This task manager fulfills all requirements for the TrailBridge recruitment assi
 - User experience design
 - API development
 - Responsive web design
-
----
->>>>>>> b8b2c60f7a92f45000ea15eae2b54045b254cd6e
