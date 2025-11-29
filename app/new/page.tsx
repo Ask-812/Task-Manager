@@ -94,9 +94,10 @@ export default function NewTask() {
                 Description
               </label>
               <textarea
-                className="w-full px-4 py-2 rounded-xl outline-none resize-none h-28 focus:border-blue-600 transition"
+                className="w-full px-4 py-2 rounded-xl outline-none resize-none h-28 focus:border-blue-600 transition
+                placeholder:text-gray-450 dark:placeholder:text-gray-450"
                 style={{ background: 'var(--card)', border: '1px solid var(--border)', color: 'var(--text)' }}
-                placeholder="Enter task description..."
+                placeholder="Enter task description..." 
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 required
