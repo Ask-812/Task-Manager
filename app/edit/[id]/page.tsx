@@ -3,6 +3,32 @@
 import { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
 
+// Client service for editing tasks
+class ClientTaskService {
+  async getTask(id: string) {
+    const response = await fetch(`/api/tasks/${id}`);
+    if (!response.ok) throw new Error("Failed to get task");
+    return response.json();
+  }
+
+  async updateTask(id: string, title: string, description: string = "") {
+    const response = await fetch(`/api/tasks/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title, description }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || "Failed to update task");
+    }
+
+    return response.json();
+  }
+}
+
+const clientTaskService = new ClientTaskService();
+
 export default function EditTask({ params }) {
   const router = useRouter();
   const { id } = use(params);
@@ -21,15 +47,15 @@ export default function EditTask({ params }) {
 
   useEffect(() => {
     const fetchTask = async () => {
-      const res = await fetch(`/api/tasks/${id}`);
-      if (res.ok) {
-        const task = await res.json();
+      try {
+        const task = await clientTaskService.getTask(id);
         setTitle(task.title);
         setDescription(task.description);
-      } else {
+      } catch (error) {
         showMessage("Failed to load task");
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
     fetchTask();
   }, [id]);
@@ -49,23 +75,16 @@ export default function EditTask({ params }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!title.trim() || !description.trim()) {
-      alert("Please fill in both fields.");
+    if (!title.trim()) {
+      alert("Please enter a task title.");
       return;
     }
 
-    const res = await fetch(`/api/tasks/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ title: title.trim(), description: description.trim() }),
-    });
-
-    if (res.ok) {
+    try {
+      await clientTaskService.updateTask(id, title.trim(), description.trim());
       showMessage("Task updated successfully");
       setTimeout(() => router.push("/"), 1000);
-    } else {
+    } catch (error) {
       showMessage("Error updating task");
     }
   };

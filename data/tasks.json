@@ -1,18 +1,28 @@
 {
   "tasks": [
     {
-      "id": "1764391853814",
-      "title": "Task 2",
-      "description": "Description 2",
+      "id": "1764418499159",
+      "title": "Task 1",
+      "description": "Description 1",
       "status": "completed",
-      "createdAt": "2025-11-29T04:50:53.814Z"
+      "createdAt": "2025-11-29T12:14:59.159Z",
+      "type": "simple"
     },
     {
-      "id": "1764396028189",
-      "title": "98g9",
-      "description": "Rfvv",
+      "id": "1764418511456",
+      "title": "Task 2",
+      "description": "Description 2",
       "status": "pending",
-      "createdAt": "2025-11-29T06:00:28.189Z"
+      "createdAt": "2025-11-29T12:15:11.456Z",
+      "type": "simple"
+    },
+    {
+      "id": "1764418525454",
+      "title": "Task 3",
+      "description": "Description 3",
+      "status": "pending",
+      "createdAt": "2025-11-29T12:15:25.454Z",
+      "type": "simple"
     }
   ]
 }

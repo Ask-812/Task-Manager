@@ -3,6 +3,40 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
+// Client-side service for API calls
+class ClientTaskService {
+  async fetchTasks() {
+    const response = await fetch("/api/tasks");
+    if (!response.ok) throw new Error("Failed to fetch tasks");
+    return response.json();
+  }
+
+  async toggleTaskStatus(id: string) {
+    const response = await fetch(`/api/tasks/${id}`, { method: "PATCH" });
+    if (!response.ok) throw new Error("Failed to update task status");
+    return response.json();
+  }
+
+  async deleteTask(id: string) {
+    const response = await fetch(`/api/tasks/${id}`, { method: "DELETE" });
+    if (!response.ok) throw new Error("Failed to delete task");
+    return response.json();
+  }
+
+  async getTaskStats() {
+    const response = await fetch("/api/tasks/stats");
+    if (!response.ok) throw new Error("Failed to fetch task statistics");
+    return response.json();
+  }
+
+  filterTasks(tasks: any[], filter: string) {
+    if (filter === "all") return tasks;
+    return tasks.filter(task => task.status === filter);
+  }
+}
+
+const clientTaskService = new ClientTaskService();
+
 function ThemeWrapper({ children }) {
   const [theme, setTheme] = useState("light");
 
@@ -38,13 +72,27 @@ function Home() {
   const [filter, setFilter] = useState("all");
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
+  const [stats, setStats] = useState({ total: 0, pending: 0, completed: 0 });
 
   const fetchTasks = async () => {
-    setLoading(true);
-    const res = await fetch("/api/tasks");
-    const data = await res.json();
-    setTasks(data);
-    setLoading(false);
+    try {
+      setLoading(true);
+      const data = await clientTaskService.fetchTasks();
+      setTasks(data);
+    } catch (error) {
+      showMessage("Failed to load tasks");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchStats = async () => {
+    try {
+      const data = await clientTaskService.getTaskStats();
+      setStats(data);
+    } catch (error) {
+      console.error("Failed to load stats");
+    }
   };
 
   const showMessage = (msg) => {
@@ -53,11 +101,12 @@ function Home() {
   };
 
   const toggleStatus = async (id) => {
-    const res = await fetch(`/api/tasks/${id}`, { method: "PATCH" });
-    if (res.ok) {
+    try {
+      await clientTaskService.toggleTaskStatus(id);
       showMessage("Task updated");
       fetchTasks();
-    } else {
+      fetchStats();
+    } catch (error) {
       showMessage("Failed to update task");
     }
   };
@@ -65,11 +114,12 @@ function Home() {
   const deleteTask = async (id) => {
     if (!confirm("Are you sure you want to delete this task?")) return;
     
-    const res = await fetch(`/api/tasks/${id}`, { method: "DELETE" });
-    if (res.ok) {
+    try {
+      await clientTaskService.deleteTask(id);
       showMessage("Task deleted");
       fetchTasks();
-    } else {
+      fetchStats();
+    } catch (error) {
       showMessage("Failed to delete task");
     }
   };
@@ -80,12 +130,10 @@ function Home() {
   
   useEffect(() => {
     fetchTasks();
+    fetchStats();
   }, []);
 
-  const filteredTasks = tasks.filter((task) => {
-    if (filter === "all") return true;
-    return task.status === filter;
-  });
+  const filteredTasks = clientTaskService.filterTasks(tasks, filter);
 
   return (
     <main className="min-h-screen flex justify-center p-6" style={{ background: 'var(--bg)', color: 'var(--text)' }}>
@@ -99,6 +147,22 @@ function Home() {
         <h1 className="text-4xl font-bold text-center mb-8 tracking-tight">
           Task Manager
         </h1>
+
+        {/* Task Statistics */}
+        <div className="grid grid-cols-3 gap-4 mb-8">
+          <div className="p-4 rounded-xl text-center" style={{ background: 'var(--card)', border: '1px solid var(--border)' }}>
+            <div className="text-2xl font-bold">{stats.total}</div>
+            <div className="text-sm" style={{ color: 'var(--subtext)' }}>Total Tasks</div>
+          </div>
+          <div className="p-4 rounded-xl text-center" style={{ background: 'var(--card)', border: '1px solid var(--border)' }}>
+            <div className="text-2xl font-bold text-yellow-500">{stats.pending}</div>
+            <div className="text-sm" style={{ color: 'var(--subtext)' }}>Pending</div>
+          </div>
+          <div className="p-4 rounded-xl text-center" style={{ background: 'var(--card)', border: '1px solid var(--border)' }}>
+            <div className="text-2xl font-bold text-green-500">{stats.completed}</div>
+            <div className="text-sm" style={{ color: 'var(--subtext)' }}>Completed</div>
+          </div>
+        </div>
 
         <div className="flex justify-center gap-4 mb-8">
           {["all", "pending", "completed"].map((key) => (

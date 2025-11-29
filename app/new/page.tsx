@@ -3,10 +3,31 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
+// Client service for creating tasks
+class ClientTaskService {
+  async createTask(title: string, description: string = "", type: "simple" | "complex" = "simple") {
+    const response = await fetch("/api/tasks", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title, description, type }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || "Failed to create task");
+    }
+
+    return response.json();
+  }
+}
+
+const clientTaskService = new ClientTaskService();
+
 export default function NewTask() {
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [taskType, setTaskType] = useState("simple");
   const [message, setMessage] = useState("");
   const [theme, setTheme] = useState("light");
 
@@ -31,23 +52,16 @@ export default function NewTask() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!title.trim() || !description.trim()) {
-      alert("Please fill in both fields.");
+    if (!title.trim()) {
+      alert("Please enter a task title.");
       return;
     }
 
-    const res = await fetch("/api/tasks", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ title: title.trim(), description: description.trim() }),
-    });
-
-    if (res.ok) {
+    try {
+      await clientTaskService.createTask(title.trim(), description.trim(), taskType);
       showMessage("Task created successfully");
       setTimeout(() => router.push("/"), 1000);
-    } else {
+    } catch (error) {
       showMessage("Error creating task");
     }
   };
@@ -76,6 +90,21 @@ export default function NewTask() {
           <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
             <div>
               <label className="block mb-1" style={{ color: 'var(--subtext)' }}>
+                Task Type
+              </label>
+              <select
+                className="w-full px-4 py-2 rounded-xl outline-none focus:border-blue-600 transition"
+                style={{ background: 'var(--card)', border: '1px solid var(--border)', color: 'var(--text)' }}
+                value={taskType}
+                onChange={(e) => setTaskType(e.target.value)}
+              >
+                <option value="simple">Simple Task</option>
+                <option value="complex">Complex Task (with subtasks)</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block mb-1" style={{ color: 'var(--subtext)' }}>
                 Title
               </label>
               <input
@@ -100,7 +129,6 @@ export default function NewTask() {
                 placeholder="Enter task description..." 
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                required
               />
             </div>
 
