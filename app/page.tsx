@@ -23,9 +23,9 @@ function ThemeWrapper({ children }) {
     <>
       <button
         onClick={toggleTheme}
-        className="fixed top-5 right-5 px-4 py-1.5 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition shadow z-10"
+        className="fixed top-5 right-5 px-4 py-1.5 rounded-xl  text-white hover:bg-blue-700 transition shadow z-10" style={{ background: 'var(--text)' }}
       >
-        {theme === "dark" ? "🌞 Light Mode" : "🌙 Dark Mode"}
+        {theme === "dark" ? "🌞" : "🌙"}
       </button>
       {children}
     </>
@@ -162,35 +162,38 @@ function Home() {
                 border: '1px solid var(--border)' 
               }}
             >
-              {/* Task Content */}
-              <div className="w-3/4">
-                <h3 className="text-xl font-semibold mb-1">{task.title}</h3>
-                <p 
-                  className="text-sm mb-1" 
-                  style={{ color: 'var(--subtext)' }}
-                >
-                  {task.description}
-                </p>
-                <p 
-                  className="text-xs" 
-                  style={{ color: 'var(--subtext)' }}
-                >
-                  {new Date(task.createdAt).toLocaleString()}
-                </p>
+              <div className="flex flex-col gap-2 items-start">
+                {/* Status Badge */}
+                    <span
+                    className={`px-3 py-1 text-xs rounded-full mb-1 font-medium ${
+                        task.status === "completed"
+                        ? "bg-green-800 text-green-200"
+                        : "bg-yellow-800 text-yellow-200"
+                    }`}
+                    >
+                    {task.status}
+                    </span>
+                {/* Task Content */}
+                <div className="w-3/4">
+                    <h3 className="text-xl font-semibold mb-1">{task.title}</h3>
+                    <p 
+                    className="text-sm mb-1" 
+                    style={{ color: 'var(--subtext)' }}
+                    >
+                    {task.description}
+                    </p>
+                    <p 
+                    className="text-xs" 
+                    style={{ color: 'var(--subtext)' }}
+                    >
+                    {new Date(task.createdAt).toLocaleString()}
+                    </p>
+                </div>
               </div>
 
               {/* Task Actions */}
               <div className="flex flex-col gap-2 items-end">
-                {/* Status Badge */}
-                <span
-                  className={`px-3 py-1 text-xs rounded-full mb-1 font-medium ${
-                    task.status === "completed"
-                      ? "bg-green-800 text-green-200"
-                      : "bg-yellow-800 text-yellow-200"
-                  }`}
-                >
-                  {task.status}
-                </span>
+
 
                 {/* Action Buttons */}
                 <button

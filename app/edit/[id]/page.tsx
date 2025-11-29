@@ -91,9 +91,9 @@ export default function EditTask({ params }) {
     <>
       <button
         onClick={toggleTheme}
-        className="fixed top-5 right-5 px-4 py-1.5 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition shadow z-10"
+        className="fixed top-5 right-5 px-4 py-1.5 rounded-xl  text-white hover:bg-blue-700 transition shadow z-10" style={{ background: 'var(--text)' }}
       >
-        {theme === "dark" ? "🌞 Light Mode" : "🌙 Dark Mode"}
+        {theme === "dark" ? "🌞" : "🌙"}
       </button>
 
       <main className="min-h-screen flex justify-center p-6" style={{ background: 'var(--bg)', color: 'var(--text)' }}>
