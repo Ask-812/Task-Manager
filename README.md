@@ -1,4 +1,4 @@
-Task Manager - TrailBridge Assignment
+Task Manager - TrialBridge Assignment
 A modern task management application built with Next.js 16, React 19, and TypeScript. This application demonstrates full-stack development capabilities with CRUD operations, responsive design, and clean architecture.
 
 Features
