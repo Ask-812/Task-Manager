@@ -96,7 +96,7 @@ export default function NewTask() {
                 className="w-full px-4 py-2 rounded-xl outline-none focus:border-blue-600 transition"
                 style={{ background: 'var(--card)', border: '1px solid var(--border)', color: 'var(--text)' }}
                 value={taskType}
-                onChange={(e) => setTaskType(e.target.value)}
+                onChange={(e) => setTaskType(e.target.value as "simple" | "complex")}
               >
                 <option value="simple">Simple Task</option>
                 <option value="complex">Complex Task (with subtasks)</option>
