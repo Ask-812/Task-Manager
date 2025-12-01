@@ -17,7 +17,7 @@ A modern, responsive task management application built with Next.js 16, React 19
 - **Framework:** Next.js 16 (App Router)
 - **Frontend:** React 19, TypeScript
 - **Styling:** Tailwind CSS 4
-- **Storage:** In-memory (Vercel compatible)
+- **Database:** MongoDB Atlas
 - **Deployment:** Vercel
 
 ## Getting Started
@@ -26,12 +26,13 @@ A modern, responsive task management application built with Next.js 16, React 19
 
 - Node.js 18+ 
 - npm, yarn, or pnpm
+- MongoDB Atlas account (free tier available)
 
 ### Installation
 
-1. Clone the repository
-2. Install dependencies:
+1. **Clone the repository**
 
+2. **Install dependencies:**
 ```bash
 npm install
 # or
@@ -40,8 +41,17 @@ yarn install
 pnpm install
 ```
 
-3. Run the development server:
+3. **Set up MongoDB Atlas:**
+   - Go to [MongoDB Atlas](https://cloud.mongodb.com/)
+   - Create a free account and cluster
+   - Get your connection string
+   - Create a `.env.local` file in the root directory
+   - Add your MongoDB URI:
+   ```
+   MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/taskmanager?retryWrites=true&w=majority
+   ```
 
+4. **Run the development server:**
 ```bash
 npm run dev
 # or
@@ -50,7 +60,7 @@ yarn dev
 pnpm dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser
+5. **Open [http://localhost:3000](http://localhost:3000) in your browser**
 
 ## Project Structure
 
@@ -112,14 +122,24 @@ vercel
 
 ### Important Notes for Vercel Deployment
 
-- ✅ **No file system dependencies** - Uses in-memory storage
-- ✅ **Serverless functions ready** - All API routes are optimized for Vercel
-- ✅ **No external database required** - Perfect for demos and prototypes
-- ⚠️ **Data persistence** - Data resets on each deployment (by design for demo purposes)
+- ✅ **MongoDB Atlas integration** - Persistent data storage
+- ✅ **Serverless functions ready** - All API routes optimized for Vercel
+- ✅ **Environment variables** - Add MONGODB_URI to Vercel project settings
+- ✅ **Data persistence** - Tasks are saved permanently in MongoDB
 
 ## Environment Variables
 
-No environment variables are required for basic functionality.
+Required environment variables:
+
+```bash
+MONGODB_URI=your_mongodb_connection_string
+```
+
+### For Vercel Deployment:
+1. Go to your Vercel project dashboard
+2. Navigate to Settings → Environment Variables
+3. Add `MONGODB_URI` with your MongoDB Atlas connection string
+4. Redeploy your application
 
 ## Contributing
 

@@ -5,7 +5,7 @@ import { storage } from "@/lib/storage";
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
-    const task = storage.getTask(id);
+    const task = await storage.getTask(id);
 
     if (!task) {
       return NextResponse.json(
@@ -37,7 +37,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
       );
     }
 
-    const updatedTask = storage.updateTask(id, {
+    const updatedTask = await storage.updateTask(id, {
       title: title.trim(),
       description: description?.trim() || ""
     });
@@ -62,7 +62,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
-    const updatedTask = storage.toggleTaskStatus(id);
+    const updatedTask = await storage.toggleTaskStatus(id);
     
     if (!updatedTask) {
       return NextResponse.json(
@@ -84,7 +84,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
-    const deleted = storage.deleteTask(id);
+    const deleted = await storage.deleteTask(id);
     
     if (!deleted) {
       return NextResponse.json(

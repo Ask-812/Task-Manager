@@ -82,7 +82,9 @@ class ComplexTask extends Task {
 // GET /api/tasks - Get all tasks
 export async function GET() {
   try {
-    const tasks = storage.getAllTasks();
+    // Initialize sample data if needed
+    await storage.initializeSampleData();
+    const tasks = await storage.getAllTasks();
     return NextResponse.json(tasks);
   } catch (error) {
     return NextResponse.json(
@@ -112,8 +114,14 @@ export async function POST(request: NextRequest) {
       task = new ComplexTask(title.trim(), description?.trim() || "");
     }
 
-    storage.addTask(task.toJSON());
-    return NextResponse.json(task.toJSON(), { status: 201 });
+    const savedTask = await storage.addTask(task.toJSON());
+    if (!savedTask) {
+      return NextResponse.json(
+        { error: "Failed to save task" },
+        { status: 500 }
+      );
+    }
+    return NextResponse.json(savedTask, { status: 201 });
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to create task" },

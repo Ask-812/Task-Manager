@@ -15,7 +15,10 @@
    - Go to [vercel.com](https://vercel.com)
    - Click "New Project"
    - Import your GitHub repository
-   - Click "Deploy" (no configuration needed)
+   - **Before deploying:** Add environment variables:
+     - Go to Settings → Environment Variables
+     - Add `MONGODB_URI` with your MongoDB Atlas connection string
+   - Click "Deploy"
 
 ### Method 2: Vercel CLI
 
@@ -31,9 +34,9 @@
 
 ## What Makes This Vercel-Ready?
 
-✅ **In-Memory Storage**: No file system dependencies  
+✅ **MongoDB Atlas**: Cloud database with persistent storage  
 ✅ **Serverless Functions**: All API routes work with Vercel's serverless architecture  
-✅ **No External Dependencies**: No database or external services required  
+✅ **Environment Variables**: Secure configuration management  
 ✅ **Optimized Build**: Next.js 16 with proper configuration  
 
 ## Post-Deployment
@@ -53,4 +56,14 @@ If you encounter issues:
 
 ## Environment Variables
 
-None required for basic functionality. The app works out of the box!
+**Required for MongoDB connection:**
+
+1. **Get MongoDB Atlas URI:**
+   - Sign up at [MongoDB Atlas](https://cloud.mongodb.com/)
+   - Create a free cluster
+   - Get connection string (replace `<password>` with your actual password)
+
+2. **Add to Vercel:**
+   - Project Settings → Environment Variables
+   - Name: `MONGODB_URI`
+   - Value: `mongodb+srv://username:password@cluster.mongodb.net/taskmanager?retryWrites=true&w=majority`

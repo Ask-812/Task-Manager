@@ -4,7 +4,7 @@ import { storage } from "@/lib/storage";
 // GET /api/tasks/stats - Get task statistics
 export async function GET() {
   try {
-    const stats = storage.getStats();
+    const stats = await storage.getStats();
     return NextResponse.json(stats);
   } catch (error) {
     return NextResponse.json(
