@@ -11,15 +11,11 @@ function getClientPromise() {
   if (!clientPromise) {
     const uri = process.env.MONGODB_URI;
     
-    // Vercel-compatible MongoDB options
+    // MongoDB options
     const options = {
-      tls: true,
-      tlsAllowInvalidCertificates: false,
-      tlsAllowInvalidHostnames: false,
       maxPoolSize: 10,
       serverSelectionTimeoutMS: 5000,
       socketTimeoutMS: 45000,
-      connectTimeoutMS: 10000,
     };
     
     if (process.env.NODE_ENV === 'development') {
