@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { promises as fs } from "fs";
-import path from "path";
+import { storage, TaskData } from "@/lib/storage";
 
-// Task classes and services directly in API routes to avoid import issues
+// Task classes for creating new tasks
 abstract class Task {
   protected _description: string = "";
   protected _title: string = "";
@@ -19,7 +18,7 @@ abstract class Task {
   get status(): "pending" | "completed" { return this._status; }
   set status(value: "pending" | "completed") { this._status = value; }
 
-  toJSON() {
+  toJSON(): TaskData {
     return {
       id: this._task_id,
       title: this._title,
@@ -72,7 +71,7 @@ class ComplexTask extends Task {
     return "complex";
   }
 
-  toJSON() {
+  toJSON(): TaskData {
     return {
       ...super.toJSON(),
       subtaskIds: this._subtaskIds
@@ -80,50 +79,10 @@ class ComplexTask extends Task {
   }
 }
 
-// Database service
-class TaskDatabaseService {
-  private filePath = path.join(process.cwd(), "data", "tasks.json");
-
-  private async readTasks() {
-    try {
-      const data = await fs.readFile(this.filePath, "utf-8");
-      return JSON.parse(data).tasks || [];
-    } catch (error) {
-      return [];
-    }
-  }
-
-  private async writeTasks(tasks: any[]) {
-    const data = { tasks };
-    await fs.writeFile(this.filePath, JSON.stringify(data, null, 2));
-  }
-
-  async getAllTasks() {
-    return await this.readTasks();
-  }
-
-  async addTask(task: Task) {
-    const tasks = await this.readTasks();
-    tasks.push(task.toJSON());
-    await this.writeTasks(tasks);
-  }
-
-  async getStats() {
-    const tasks = await this.readTasks();
-    return {
-      total: tasks.length,
-      pending: tasks.filter(task => task.status === "pending").length,
-      completed: tasks.filter(task => task.status === "completed").length
-    };
-  }
-}
-
-const dbService = new TaskDatabaseService();
-
 // GET /api/tasks - Get all tasks
 export async function GET() {
   try {
-    const tasks = await dbService.getAllTasks();
+    const tasks = storage.getAllTasks();
     return NextResponse.json(tasks);
   } catch (error) {
     return NextResponse.json(
@@ -153,7 +112,7 @@ export async function POST(request: NextRequest) {
       task = new ComplexTask(title.trim(), description?.trim() || "");
     }
 
-    await dbService.addTask(task);
+    storage.addTask(task.toJSON());
     return NextResponse.json(task.toJSON(), { status: 201 });
   } catch (error) {
     return NextResponse.json(

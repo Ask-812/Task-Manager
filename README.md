@@ -1,209 +1,134 @@
-# Task Manager - TrialBridge Assignment
+# Task Manager
 
-A sophisticated task management application built with Next.js 16, React 19, and TypeScript. This application demonstrates advanced full-stack development capabilities with CRUD operations, object-oriented architecture, and modern design patterns.
+A modern, responsive task management application built with Next.js 16, React 19, and TypeScript. Features a clean UI with dark/light theme support and full CRUD operations for task management.
 
-Features
+## Features
 
-Core Functionality
--  Create Tasks - Add new Simple or Complex tasks with title and description
--  View Tasks - Display all tasks in a clean, organized interface with statistics
--  Update Tasks - Edit existing task details
--  Delete Tasks - Remove tasks permanently
--  Toggle Status - Mark tasks as pending or completed
--  Task Statistics - Real-time dashboard showing total, pending, and completed counts
+- ✅ Create, read, update, and delete tasks
+- 🌓 Dark/Light theme toggle
+- 📊 Task statistics dashboard
+- 🔍 Filter tasks by status (all, pending, completed)
+- 📱 Responsive design
+- 🚀 Vercel-ready deployment
+- 💾 In-memory storage (perfect for demos and prototypes)
 
- User Experience
--  Dark/Light Theme - Toggle between themes with persistent preference
--  Responsive Design - Works seamlessly on desktop and mobile
--  Task Filtering - Filter by All, Pending, or Completed tasks
--  Clean UI - Modern interface using Tailwind CSS with smooth animations
--  Statistics Dashboard - Visual overview of task completion progress
+## Tech Stack
 
- Technical Features
--  Next.js 16 App Router - Latest routing and server components
--  File-based Storage - JSON data persistence
--  REST API - Clean API endpoints for all operations
--  TypeScript - Type-safe development
--  Tailwind CSS - Utility-first styling
--  Object-Oriented Architecture - Abstract classes, inheritance, and design patterns
+- **Framework:** Next.js 16 (App Router)
+- **Frontend:** React 19, TypeScript
+- **Styling:** Tailwind CSS 4
+- **Storage:** In-memory (Vercel compatible)
+- **Deployment:** Vercel
 
- System Architecture
+## Getting Started
 
-This project implements a sophisticated Object-Oriented Design following clean architecture principles:
+### Prerequisites
 
- Class Structure
-```typescript
-// Abstract base class with @get/@set patterns
-abstract class Task {
-  protected _title: string;
-  protected _description: string;
-  protected _task_id: string;
-  protected _status: "pending" | "completed";
-  
-  // Getters and Setters
-  get title(): string { return this._title; }
-  set title(value: string) { this._title = value; }
-  
-  abstract getType(): string;
-}
+- Node.js 18+ 
+- npm, yarn, or pnpm
 
-// Concrete implementations
-class SimpleTask extends Task {
-  getType(): string { return "simple"; }
-}
+### Installation
 
-class ComplexTask extends Task {
-  private _subtaskIds: string[] = [];
-  
-  addSubtask(taskId: string): void { / logic / }
-  removeSubtask(taskId: string): void { / logic / }
-  
-  getType(): string { return "complex"; }
-}
-```
-
- Architecture Layers
-- Model Layer: Abstract Task class with inheritance hierarchy
-- Service Layer: Database abstraction with multiple implementations
-- Controller Layer: Business logic and API endpoint handlers
-- Client Layer: Frontend services for API interaction
-
- Tech Stack
-
-- Framework: Next.js 16.0.5
-- Frontend: React 19.2.0, TypeScript
-- Styling: Tailwind CSS 4
-- Data Storage: File-based JSON
-- Development: ESLint, PostCSS
-- Architecture: Object-Oriented Programming, SOLID principles
-
- Project Structure
-
-```
-task-manager/
-├── app/
-│   ├── page.tsx               Main dashboard with statistics
-│   ├── layout.tsx             Root layout with theme
-│   ├── globals.css            Global styles & theme variables
-│   ├── new/
-│   │   └── page.tsx           Create task page (Simple/Complex)
-│   ├── edit/
-│   │   └── [id]/page.tsx      Edit task page
-│   └── api/
-│       └── tasks/
-│           ├── route.ts       Tasks API (GET, POST) with OOP classes
-│           ├── stats/route.ts  Statistics endpoint
-│           └── [id]/route.ts  Individual task API (GET, PUT, PATCH, DELETE)
-├── data/
-│   └── tasks.json            Task data storage
-└── public/                   Static assets
-```
-
- API Endpoints
-
- Tasks Collection
-- `GET /api/tasks` - Retrieve all tasks
-- `POST /api/tasks` - Create a new task (Simple/Complex)
-
- Individual Tasks
-- `GET /api/tasks/[id]` - Get specific task
-- `PUT /api/tasks/[id]` - Update task title/description
-- `PATCH /api/tasks/[id]` - Toggle task status
-- `DELETE /api/tasks/[id]` - Delete task
-
- Statistics
-- `GET /api/tasks/stats` - Get task statistics (total, pending, completed)
-
- Getting Started
-
-1. Install Dependencies
-   ```bash
-   npm install
-   ```
-
-2. Run Development Server
-   ```bash
-   npm run dev
-   ```
-
-3. Open Application
-   Navigate to [http://localhost:3000](http://localhost:3000)
-
- Usage
-
- Creating Tasks
-1. Click "Create Task" on the main dashboard
-2. Choose task type: Simple Task or Complex Task (with subtasks)
-3. Fill in the task title (required) and description (optional)
-4. Click "Create Task" to save
-
- Managing Tasks
-- Toggle Status: Click the status button to mark as pending/completed
-- Edit: Click "Edit" to modify task details
-- Delete: Click "Delete" to remove the task permanently
-
- Dashboard Features
-- Statistics Cards: View total, pending, and completed task counts
-- Filtering: Use filter buttons to view All, Pending, or Completed tasks
-- Theme Toggle: Click the theme button (🌙/☀️) to switch modes
-
- Development Features
-
- Object-Oriented Programming
-- Abstract Classes: Base Task class with protected properties
-- Inheritance: SimpleTask and ComplexTask extending base class
-- Encapsulation: Private/protected properties with getter/setter methods
-- Polymorphism: Different task types with common interface
-
- Design Patterns
-- Factory Pattern: Task creation based on type
-- Service Layer Pattern: Database abstraction
-- Controller Pattern: API endpoint management
-- Observer Pattern: Real-time statistics updates
-
- Code Quality
-- Type Safety: Full TypeScript implementation
-- Error Handling: Comprehensive try-catch blocks
-- Clean Code: SOLID principles and separation of concerns
-- Scalability: Easy to extend with new task types or database services
-
- Build & Deploy
+1. Clone the repository
+2. Install dependencies:
 
 ```bash
- Build for production
-npm run build
-
- Start production server
-npm start
-
- Lint code
-npm run lint
+npm install
+# or
+yarn install
+# or
+pnpm install
 ```
 
- Architecture Benefits
+3. Run the development server:
 
-This implementation demonstrates:
--  Scalable Architecture: Easy to add new task types or features
--  Maintainability: Clean separation of concerns
--  Testability: Each layer can be tested independently
--  Flexibility: Database service can be easily swapped
--  Performance: Optimized React patterns and Next.js features
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+```
 
- Assignment Completion
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-This task manager fulfills all requirements for the TrailBridge recruitment assignment, demonstrating:
--  Advanced Full-stack Development capabilities
--  Object-Oriented Programming mastery
--  Modern JavaScript/TypeScript proficiency
--  Clean Architecture implementation
--  System Design expertise
--  User Experience design
--  API Development best practices
--  Responsive Web Design implementation
-=======
-- Full-stack development capabilities
-- Modern JavaScript/TypeScript proficiency
-- Clean code architecture
-- User experience design
-- API development
-- Responsive web design
+## Project Structure
+
+```
+Task-Manager/
+├── app/
+│   ├── api/
+│   │   └── tasks/
+│   │       ├── route.ts          # Main tasks API
+│   │       ├── [id]/route.ts     # Individual task operations
+│   │       └── stats/route.ts    # Task statistics
+│   ├── edit/[id]/
+│   │   └── page.tsx              # Edit task page
+│   ├── new/
+│   │   └── page.tsx              # Create new task page
+│   ├── globals.css               # Global styles
+│   ├── layout.tsx                # Root layout
+│   └── page.tsx                  # Home page
+├── lib/
+│   └── storage.ts                # In-memory storage service
+└── public/                       # Static assets
+```
+
+## API Endpoints
+
+- `GET /api/tasks` - Get all tasks
+- `POST /api/tasks` - Create a new task
+- `GET /api/tasks/[id]` - Get a specific task
+- `PUT /api/tasks/[id]` - Update a task
+- `PATCH /api/tasks/[id]` - Toggle task status
+- `DELETE /api/tasks/[id]` - Delete a task
+- `GET /api/tasks/stats` - Get task statistics
+
+## Deployment to Vercel
+
+This application is optimized for Vercel deployment:
+
+### Option 1: Deploy from GitHub
+
+1. Push your code to a GitHub repository
+2. Go to [Vercel](https://vercel.com)
+3. Import your GitHub repository
+4. Vercel will automatically detect it's a Next.js project
+5. Click "Deploy"
+
+### Option 2: Deploy using Vercel CLI
+
+1. Install Vercel CLI:
+```bash
+npm i -g vercel
+```
+
+2. Deploy:
+```bash
+vercel
+```
+
+3. Follow the prompts
+
+### Important Notes for Vercel Deployment
+
+- ✅ **No file system dependencies** - Uses in-memory storage
+- ✅ **Serverless functions ready** - All API routes are optimized for Vercel
+- ✅ **No external database required** - Perfect for demos and prototypes
+- ⚠️ **Data persistence** - Data resets on each deployment (by design for demo purposes)
+
+## Environment Variables
+
+No environment variables are required for basic functionality.
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## License
+
+This project is open source and available under the [MIT License](LICENSE).

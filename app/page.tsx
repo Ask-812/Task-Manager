@@ -37,7 +37,7 @@ class ClientTaskService {
 
 const clientTaskService = new ClientTaskService();
 
-function ThemeWrapper({ children }) {
+function ThemeWrapper({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState("light");
 
   useEffect(() => {
@@ -68,11 +68,11 @@ function ThemeWrapper({ children }) {
 
 function Home() {
   const router = useRouter();
-  const [tasks, setTasks] = useState([]);
-  const [filter, setFilter] = useState("all");
-  const [loading, setLoading] = useState(true);
-  const [message, setMessage] = useState("");
-  const [stats, setStats] = useState({ total: 0, pending: 0, completed: 0 });
+  const [tasks, setTasks] = useState<any[]>([]);
+  const [filter, setFilter] = useState<string>("all");
+  const [loading, setLoading] = useState<boolean>(true);
+  const [message, setMessage] = useState<string>("");
+  const [stats, setStats] = useState<{ total: number; pending: number; completed: number }>({ total: 0, pending: 0, completed: 0 });
 
   const fetchTasks = async () => {
     try {
@@ -95,12 +95,12 @@ function Home() {
     }
   };
 
-  const showMessage = (msg) => {
+  const showMessage = (msg: string) => {
     setMessage(msg);
     setTimeout(() => setMessage(""), 2000);
   };
 
-  const toggleStatus = async (id) => {
+  const toggleStatus = async (id: string) => {
     try {
       await clientTaskService.toggleTaskStatus(id);
       showMessage("Task updated");
@@ -111,7 +111,7 @@ function Home() {
     }
   };
 
-  const deleteTask = async (id) => {
+  const deleteTask = async (id: string) => {
     if (!confirm("Are you sure you want to delete this task?")) return;
     
     try {
@@ -124,7 +124,7 @@ function Home() {
     }
   };
 
-  const editTask = (id) => {
+  const editTask = (id: string) => {
     router.push(`/edit/${id}`);
   };
   

@@ -25,11 +25,11 @@ const clientTaskService = new ClientTaskService();
 
 export default function NewTask() {
   const router = useRouter();
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [taskType, setTaskType] = useState("simple");
-  const [message, setMessage] = useState("");
-  const [theme, setTheme] = useState("light");
+  const [title, setTitle] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [taskType, setTaskType] = useState<"simple" | "complex">("simple");
+  const [message, setMessage] = useState<string>("");
+  const [theme, setTheme] = useState<string>("light");
 
   useEffect(() => {
     const saved = localStorage.getItem("theme") || "dark";
@@ -44,12 +44,12 @@ export default function NewTask() {
     document.documentElement.className = newTheme;
   };
 
-  const showMessage = (msg) => {
+  const showMessage = (msg: string) => {
     setMessage(msg);
     setTimeout(() => setMessage(""), 2000);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!title.trim()) {

@@ -29,15 +29,15 @@ class ClientTaskService {
 
 const clientTaskService = new ClientTaskService();
 
-export default function EditTask({ params }) {
+export default function EditTask({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const { id } = use(params);
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [message, setMessage] = useState("");
-  const [theme, setTheme] = useState("light");
-  const [loading, setLoading] = useState(true);
+  const [title, setTitle] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
+  const [theme, setTheme] = useState<string>("light");
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const saved = localStorage.getItem("theme") || "dark";
@@ -67,12 +67,12 @@ export default function EditTask({ params }) {
     document.documentElement.className = newTheme;
   };
 
-  const showMessage = (msg) => {
+  const showMessage = (msg: string) => {
     setMessage(msg);
     setTimeout(() => setMessage(""), 2000);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!title.trim()) {
